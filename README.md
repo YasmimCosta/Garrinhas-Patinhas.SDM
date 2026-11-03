@@ -45,7 +45,7 @@ Desenvolver um sistema web com banco de dados próprio, API privada, consumo de 
 
 ## 🗄️ Modelo de Dados
 
-📎 Diagrama ER e modelo relacional: [`Diagrama Garrinhas e Patinhas`](Diagrama.pdf)
+📎 Diagrama ER e modelo relacional: [`Diagrama Garrinhas e Patinhas`](docs/diagrama.pdf)
 
 ## ✅ Funcionalidades
 
@@ -134,7 +134,7 @@ clinica-veterinaria/
 ## 📚 Documentação
 
 - [Requisitos e arquitetura](docs/requisitos/)
-- [Diagrama ER e modelo relacional](Diagrama.pdf)
+- [Diagrama ER e modelo relacional](docs/diagrama.pdf)
 - [Documentação dos endpoints (OpenAPI)](docs/api/)
 - [Relatório de testes](docs/testes/)
 
