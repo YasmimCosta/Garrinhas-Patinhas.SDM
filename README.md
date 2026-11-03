@@ -134,7 +134,7 @@ clinica-veterinaria/
 ## 📚 Documentação
 
 - [Requisitos e arquitetura](docs/requisitos/)
-- [Diagrama ER e modelo relacional](docs/diagramas/)
+- [Diagrama ER e modelo relacional](GarrinhasePatinhasDiagrama.pdf)
 - [Documentação dos endpoints (OpenAPI)](docs/api/)
 - [Relatório de testes](docs/testes/)
 
