@@ -1,0 +1,26 @@
+- Regras de negócio
+RN01 – Todo animal possui um tutor responsável.
+RN02 – O CPF do tutor deve ser válido e não pode estar duplicado.
+RN03 – A raça escolhida deve ser compatível com a espécie; é permitido não informar raça.
+RN04 – O identificador do microchip RFID é único.
+RN05 – O vínculo do microchip só é feito por veterinário autenticado, ativo e autorizado; o sistema registra o profissional responsável e a data do vínculo.
+RN06 – A substituição de um microchip preserva o histórico anterior.
+RN07 –  Só acessa o sistema o veterinário cadastrado, ativo e com senha confirmada.
+RN08 – A senha não é armazenada em texto puro; a confirmação por código ou link é registrada com data e hora após a conclusão do fluxo de validação.
+RN09 – Toda consulta está associada a um animal e a um veterinário.
+RN10 – A vacina antirrábica é identificada por classificação estruturada, e não exclusivamente pela descrição digitada pelo usuário.
+RN11 – Toda vacina antirrábica efetivamente aplicada gera uma solicitação de comunicação obrigatória à API governamental simulada, mesmo que o animal já esteja cadastrado no serviço externo.
+RN12 – A comunicação ocorre após o registro local da aplicação da vacina.
+RN13 – Vacinas não antirrábicas não estão sujeitas à comunicação obrigatória.
+RN14 – O sistema registra o resultado da comunicação e o protocolo retornado, quando disponível.
+RN15 – Com o serviço externo indisponível, a vacinação permanece registrada localmente e a comunicação fica pendente.
+RN16 – O sistema permite novas tentativas de envio, automáticas ou manuais.
+RN17 – A repetição de uma solicitação não gera duplicidade de registros no serviço externo.
+RN18 – O sistema distingue o registro local da vacinação da confirmação de recebimento pela API governamental.
+RN19 – O sistema permite consultar o estado da comunicação e a situação da integração governamental de cada animal.
+RN20 – A situação das operações de integração distingue, no mínimo, pendentes, enviadas, confirmadas e com falha.
+RN21 – Ao informar o CEP, o sistema consome a API ViaCEP e preenche os dados automaticamente, permitindo complementação manual e tratando CEP inexistente, timeout e indisponibilidade.
+RN22 – A API governamental simulada valida os dados recebidos, impede duplicidade de registros e gera protocolos de processamento.
+RN23 – As operações protegidas da API privada exigem autenticação e autorização.
+RN24 – A API privada realiza exclusão lógica para as entidades aplicáveis; tutores são inativados, não removidos.
+
