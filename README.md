@@ -72,7 +72,7 @@ Desenvolver um sistema web com banco de dados próprio, API privada, consumo de 
 ## 📁 Estrutura do repositório
 
 ```
-clinica-veterinaria/
+Garrinhas-Patinhas.SDM/
 ├── frontend/                  # Interface web
 │   └── src/
 ├── backend-clinica/           # API privada
