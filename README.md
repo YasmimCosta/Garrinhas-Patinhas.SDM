@@ -45,7 +45,7 @@ Desenvolver um sistema web com banco de dados próprio, API privada, consumo de 
 
 ## Diagrama
 
-📎 Diagrama ER e modelo relacional: GarrinhasePatinhasDiagrama.pdf
+📎 Diagrama ER e modelo relacional: [`Diagrama Garrinhas e Patinhas`](GarrinhasePatinhasDiagrama.pdf)
 
 ## ✅ Funcionalidades
 
