@@ -1,1 +1,45 @@
+- Requisitos funcionais
+[RF01] Login por e-mail e senha.
+[RF02] Senha armazenada somente com hash apropriado.
+[RF03] Confirmação da senha por código ou link de validação enviado ao e-mail.
+[RF04] Bloquear acesso de veterinário inativo.
+[RF05] Bloquear acesso de veterinário que não confirmou a senha.
+[RF06] Logout e encerramento da sessão.
+[RF07] Incluir, consultar, alterar e suspender tutores.
+[RF08] Validar o CPF e impedir CPF duplicado.
+[RF09] Cadastrar endereços de tutores e, se necessário, da clínica.
+[RF10] Consumir o ViaCEP ao informar o CEP.
+[RF11] Preencher os campos automaticamente.
+[RF12] Tratar CEP inexistente, timeout e indisponibilidade do serviço.
+[RF13] Manter catálogo de espécies (ex.: cão, gato, ave).
+[RF14] Manter catálogo de raças por espécie, validar compatibilidade e permitir sem raça definida.
+[RF15] Manter dados do veterinário: CRMV, UF do CRMV, confirmação de senha, situação e último acesso.
+[RF16] Cadastrar e atualizar animais, sempre com tutor e espécie.
+[RF17] Vincular microchip RFID único, por veterinário autenticado, ativo e autorizado, registrando profissional e data.
+[RF18] Substituir microchip preservando o histórico anterior.
+[RF19] Consultar dados do animal e a situação da sua integração governamental.
+[RF20] Registrar consultas (agendada, realizada, cancelada ou não compareceu).
+[RF21] Consultar o histórico de atendimentos de cada animal.
+[RF22] Registrar aplicações de vacina (agendada, aplicada ou cancelada).
+[RF23] Consultar o histórico de vacinação e as próximas doses previstas.
+[RF24] Identificar a vacina antirrábica por classificação estruturada, não pela descrição digitada pelo usuário.
+[RF25] API deverá disponibilizar operações de criação, consulta, atualização e exclusão lógica para as
+entidades aplicáveis.
+[RF26] A API governamental deve cadastrar, consultar por microchip e atualizar animais.
+[RF27] Receber vacinação antirrábica, validar dados, impedir duplicidade e gerar protocolo, retornar o resultado da operação.
+[RF28] Simular erros de validação e indisponibilidade.
+[RF29] Gerar comunicação obrigatória a cada antirrábica aplicada, após o registro local.
+
+- Requisitos não funcionais
+[RNF01] Interface web responsiva.
+[RNF02] Frontend e backend se comunicam por API REST; serviços se comunicam por HTTP.
+[RNF03] Banco de dados relacional.
+[RNF04] Validação dos dados no frontend e no backend.
+[RNF05] Tratamento de erros HTTP, timeout e indisponibilidade.
+[RNF06] Autenticação e autorização nos endpoints protegidos; credenciais armazenadas com segurança.
+[RNF07] Registro das operações de integração.
+[RNF08] Documentação dos endpoints.
+[RNF09] Código organizado em componentes e camadas.
+[RNF10] Utilização de dados fictícios na demonstração.
+
 
