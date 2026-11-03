@@ -43,7 +43,7 @@ Desenvolver um sistema web com banco de dados próprio, API privada, consumo de 
 | Testes de API | Postman | Coleção de testes reproduzível |
 | Controle de versão | Git + GitHub | Colaboração e rastreabilidade |
 
-## Diagrama
+## 🗄️ Diagrama
 
 📎 Diagrama ER e modelo relacional: [`Diagrama Garrinhas e Patinhas`](GarrinhasePatinhasDiagrama.pdf)
 
