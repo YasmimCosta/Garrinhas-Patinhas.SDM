@@ -33,8 +33,6 @@ Desenvolver um sistema web com banco de dados próprio, API privada, consumo de 
 
 ## 🛠️ Tecnologias
 
-> Preencher com as tecnologias escolhidas e a justificativa (exigência do projeto).
-
 | Camada | Tecnologia | Justificativa |
 |---|---|---|
 | Frontend | _a definir_ | _a definir_ |
@@ -100,11 +98,9 @@ clinica-veterinaria/
 
 ## 🚀 Como executar
 
-> Complete esta seção após definir a stack. Abaixo, o roteiro esperado.
+> 
 
 ## 🧪 Testes
-
-Cenários obrigatórios a serem demonstrados:
 
 **Autenticação**
 - [ ] 1. Login de veterinário ativo e com senha confirmada
@@ -130,7 +126,6 @@ Cenários obrigatórios a serem demonstrados:
 - [ ] 15. Reenvio de comunicação pendente e confirmação posterior
 - [ ] 16. Repetição de solicitação sem duplicidade no serviço externo
 
-📎 Coleção Postman: [`postman/`](postman/) · Relatório de execução: [`docs/testes/`](docs/testes/)
 
 ## 📚 Documentação
 
@@ -141,13 +136,13 @@ Cenários obrigatórios a serem demonstrados:
 
 ## 👥 Equipe
 
-| Nome | Função | GitHub |
-|---|---|---|
-| _Felipe Martins_ | _ex.: Backend / API governamental_ | [@usuario](https://github.com/usuario) |
-| _Stella Miranda_ | _ex.: Frontend_ | [@usuario](https://github.com/usuario) |
-| _Yasmim Costa_ | _ex.: Banco de dados / Modelagem_ | [@usuario](https://github.com/usuario) |
+| Nome | GitHub |
+|---|---|
+| _Felipe Martins_ | [@fox322](https://github.com/fox322) |
+| _Stella Miranda_ | [@st3llami](https://github.com/st3llami) |
+| _Yasmim Costa_ | [@YasmimCosta](https://github.com/YasmimCosta) |
 
-**Professor(a) orientador(a):** _Fabio Gomes_
+**Professor:** _Fabio Gomes_
 
 ## ⚠️ Aviso
 
