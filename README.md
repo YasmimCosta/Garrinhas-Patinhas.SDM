@@ -1,4 +1,4 @@
-# Garrinhas-Patinhas.SDM
+# Garrinhas&Patinhas - SDM
 Desesnvolvimento de um sistema de web com integração de APIs (privadas, públicas e governamental simulada) de um sistema de gestão de clínica veterinária para projeto SDM.
 
 # 🐾 Sistema Web para Gestão de Clínica Veterinária com Integração de APIs
