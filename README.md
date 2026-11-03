@@ -98,7 +98,7 @@ clinica-veterinaria/
 
 ## 🚀 Como executar
 
-> 
+> Ainda temos que atualizar
 
 ## 🧪 Testes
 
