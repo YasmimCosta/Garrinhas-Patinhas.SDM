@@ -1,0 +1,6 @@
+Frontend - Telas para o veterinário usar o sistema (HTML, CSS e JavaScript).
+API privada - Login, regras de negócio, salvar dados, falar com ViaCEP e com o governo (Python).
+Banco da clínica - Guarda tutores, animais, consultas, vacinas, etc. (SQL, PostgreSQL).
+API governamental simulada - Simula um serviço de registro de animais por microchip; não é uma integração oficial com sistemas governamentais (Python).
+Banco do governo - Guarda os dados do governo, separado do da clínica (SQL, PostgreSQL).
+ViaCEP - Serviço público que devolve o endereço a partir do CEP (API pública externa).
