@@ -1,157 +1,149 @@
-# Garrinhas&Patinhas - SDM
-Desesnvolvimento de um sistema de web com integração de APIs (privadas, públicas e governamental simulada) de um sistema de gestão de clínica veterinária para projeto SDM.
+# 🐾 Garrinhas & Patinhas — Sistema Web para Gestão de Clínica Veterinária com Integração de APIs
 
-# 🐾 Sistema Web para Gestão de Clínica Veterinária com Integração de APIs
+> **A3 – Projeto Integrador · Sistemas Distribuídos e Mobile (SDM)** · IBMR Centro Universitário Barra
+> Entrega/Apresentação: **26/11/2026** · Cronograma: [`docs/cronograma.jpeg`](docs/cronograma.jpeg) · [`docs/cronograma-e-entregas.md`](docs/cronograma-e-entregas.md)
 
-> **A3 – Projeto Integrador · Sistemas Distribuídos e Mobile (SDM)**
-> IBMR Centro Universitário · Apresentação/Entrega: **26/11/2026**
+Sistema web para cadastro e atendimento de uma clínica veterinária (**dados fictícios**): tutores, animais com microchip RFID,
+veterinários, consultas e vacinas. Três serviços independentes se comunicam por HTTP/REST:
 
-![status](https://img.shields.io/badge/status-em%20desenvolvimento-yellow)
-![license](https://img.shields.io/badge/licen%C3%A7a-MIT-blue)
+```mermaid
+flowchart LR
+    U[Veterinário] --> F[Frontend :3000]
+    F -->|REST + JWT| A[API privada da clínica :8080]
+    A --> DB1[(clinica.db)]
+    A -->|HTTP| V[ViaCEP<br/>API pública real]
+    A -->|HTTP + idempotência| G[API governamental SIMULADA :8081]
+    G --> DB2[(governo.db)]
+```
 
----
+> ⚠️ A API governamental é **simulada** e **não** representa integração oficial com órgãos reais.
 
-## 📖 Sobre o projeto
-
-Sistema web para informatizar o cadastro e o atendimento de uma clínica veterinária, permitindo gerenciar **tutores, animais, veterinários, consultas e vacinas**.
-
-A solução é composta por três serviços que se comunicam via HTTP:
-
-1. **API privada da clínica**: regras de negócio, autenticação, validações e persistência.
-2. **API pública real (ViaCEP)**: consulta de CEP para preenchimento automático de endereços.
-3. **API governamental simulada**: serviço independente que simula o registro de animais identificados por **microchip RFID** e recebe as comunicações obrigatórias de **vacina antirrábica**.
-
-O projeto demonstra conceitos de desenvolvimento web, APIs REST, sistemas distribuídos, integração entre serviços, persistência de dados, autenticação e tratamento de falhas de comunicação.
-
-## 🎯 Objetivos
-
-Desenvolver um sistema web com banco de dados próprio, API privada, consumo de API pública real e integração com API governamental simulada, garantindo:
-
-- controle de acesso;
-- rastreabilidade dos procedimentos;
-- comunicação das informações obrigatórias.
+## ✅ O que o sistema faz
+- **Login** de veterinário (hash scrypt + JWT), confirmação de senha por código (e-mail simulado), bloqueio de inativos e de senha não confirmada, logout.
+- **Tutores** (CPF validado e único, inativação lógica) e **endereços** com preenchimento automático via **ViaCEP** (tratando CEP inexistente, timeout e indisponibilidade).
+- **Espécies/raças** com validação de compatibilidade (e "sem raça definida").
+- **Animais** com **microchip RFID** único, vínculo por veterinário autenticado e **histórico preservado** na substituição.
+- **Consultas** e **vacinas** com histórico por animal e próximas doses.
+- **Regra central:** toda vacina **antirrábica aplicada** é comunicada à API governamental **após** o registro local; se o governo estiver fora, a vacina fica salva, a comunicação fica **PENDENTE** e é reenviada (manual/automático) **sem duplicar** (chave de idempotência).
+- Painel de **integrações** (PENDENTE → ENVIADA → CONFIRMADA | FALHA) e simulador de indisponibilidade do governo.
 
 ## 🛠️ Tecnologias
+| Camada | Tecnologia |
+|---|---|
+| Frontend | HTML + CSS + JavaScript (responsivo, sem build) |
+| API privada / API governamental | Python 3.10+ · Flask · PyJWT · requests |
+| Banco de dados | SQLite (relacional; DDL portável p/ PostgreSQL/MySQL) |
+| Documentação | OpenAPI 3 (`docs/api/`) |
+| Testes | Postman + script `tests/run_tests.py` |
 
-| Camada | Tecnologia | Justificativa |
-|---|---|---|
-| Frontend | _a definir_ | _a definir_ |
-| Backend (API privada) | _a definir_ | _a definir_ |
-| API governamental simulada | _a definir_ | _a definir_ |
-| Banco de dados | _PostgreSQL / MySQL_ | _a definir_ |
-| Documentação da API | Swagger / OpenAPI | Documentação padronizada dos endpoints |
-| Testes de API | Postman | Coleção de testes reproduzível |
-| Controle de versão | Git + GitHub | Colaboração e rastreabilidade |
-
-## 🗄️ Modelo de Dados
-
-📎 Diagrama ER e modelo relacional: [`Diagrama Garrinhas e Patinhas`](docs/diagrama.pdf)
-
-## ✅ Funcionalidades
-
-### Autenticação e controle de acesso
-- Login por e-mail e senha
-- Senha armazenada com **hash** apropriado (nunca em texto puro)
-- Confirmação de senha por código/link enviado por e-mail (pode ser simulado)
-- Bloqueio de veterinários **inativos** ou com **senha não confirmada**
-- Logout e encerramento de sessão
-- Proteção de todos os endpoints privados
-
-### Cadastros
-- **Tutores**: incluir, consultar, alterar e inativar (CPF validado e único)
-- **Endereços**: preenchimento automático via ViaCEP, com complemento manual e tratamento de CEP inexistente, timeout e indisponibilidade
-- **Espécies** e **Raças**: catálogo com validação de compatibilidade raça × espécie (permite "sem raça definida")
-- **Veterinários**: CRMV, UF, situação, confirmação de senha e último acesso
-- **Animais e microchip RFID**: microchip único, vinculado por veterinário autenticado, com histórico preservado em caso de substituição
-
-### Atendimento
-- **Consultas**: anamnese, sintomas, diagnóstico, tratamento, prescrição, peso, temperatura e situação (agendada, realizada, cancelada, não compareceu)
-- **Vacinas**: dados do lote, fabricante, dose, via de aplicação, próxima dose e situação (agendada, aplicada, cancelada)
-- Histórico de consultas e vacinação por animal, com próximas doses previstas
-
-## 📁 Estrutura do repositório
-
-```
-Garrinhas-Patinhas.SDM/
-├── frontend/                  # Interface web
-│   └── src/
-├── backend-clinica/           # API privada
-│   ├── src/
-│   └── tests/
-├── api-governo-simulada/      # API governamental simulada
-│   ├── src/
-│   └── tests/
-├── database/                  # Scripts de criação e carga inicial
-│   ├── clinica/
-│   └── governo/
-├── docs/
-│   ├── requisitos/
-│   ├── diagramas/             # DER, modelo relacional, arquitetura
-│   ├── api/                   # OpenAPI/Swagger
-│   └── testes/                # Relatório de testes
-├── postman/                   # Coleção de testes das APIs
-├── .github/
-│   ├── ISSUE_TEMPLATE/
-│   └── pull_request_template.md
-├── docker-compose.yml
-├── .env.example
-├── .gitignore
-├── LICENSE
-└── README.md
-```
+Justificativas em [`docs/requisitos/requisitos-e-arquitetura.md`](docs/requisitos/requisitos-e-arquitetura.md).
 
 ## 🚀 Como executar
 
-> Ainda temos que atualizar
+**Pré-requisitos:** Python 3.10+ e Git.
+
+```bash
+git clone https://github.com/YasmimCosta/Garrinhas-Patinhas.SDM.git
+cd Garrinhas-Patinhas.SDM
+
+python -m venv .venv
+source .venv/bin/activate          # Windows: .venv\Scripts\activate
+pip install -r requirements.txt
+
+cp .env.example .env               # Windows: copy .env.example .env  (ajuste se quiser)
+```
+
+Abra **três terminais** (com o venv ativo), na raiz do projeto:
+
+```bash
+# 1) API governamental simulada  -> http://localhost:8081
+cd api-governo-simulada && python app.py
+
+# 2) API privada da clínica      -> http://localhost:8080
+cd backend-clinica && python app.py
+
+# 3) Frontend                    -> http://localhost:3000
+cd frontend && python -m http.server 3000
+```
+
+Os bancos são **criados e populados automaticamente** na primeira execução a partir de
+[`database/clinica/`](database/clinica) e [`database/governo/`](database/governo). Para recomeçar do zero, apague os arquivos `*.db`.
+
+### Acesso de demonstração (dados fictícios)
+| Veterinário | E-mail | Senha | Situação |
+|---|---|---|---|
+| Dra. Ana Souza | `ana.souza@clinica.test` | `Senha@123` | ✅ ativa e confirmada |
+| Dr. Bruno Lima | `bruno.lima@clinica.test` | `Senha@123` | ⛔ inativo |
+| Dra. Carla Dias | `carla.dias@clinica.test` | `Senha@123` | ⏳ senha não confirmada (código `123456`) |
+
+CEP para teste: `20040020` (válido) e `99999999` (inexistente). Microchips: 15 dígitos, ex.: `076000000000001`.
+
+## 🔌 Endpoints
+Documentação completa: [`docs/api/openapi-clinica.yaml`](docs/api/openapi-clinica.yaml) e [`docs/api/openapi-governo.yaml`](docs/api/openapi-governo.yaml)
+(cole no <https://editor.swagger.io> para visualizar).
+
+| API privada (8080) | |
+|---|---|
+| `POST /api/auth/login` · `/cadastro` · `/confirmar` · `/logout` | autenticação |
+| `GET /api/cep/{cep}` | consulta ViaCEP |
+| `/api/tutores` (POST, GET, GET/PUT/DELETE `/{id}`) | tutores |
+| `/api/animais`, `/api/animais/{id}`, `POST /api/animais/{id}/microchip` | animais e microchip |
+| `POST /api/consultas`, `GET /api/animais/{id}/consultas` | consultas |
+| `POST /api/vacinas`, `GET /api/animais/{id}/vacinas` | vacinas e próximas doses |
+| `GET /api/integracoes`, `POST /api/integracoes/{id}/reenviar` | controle das integrações |
+
+| API governamental simulada (8081) | |
+|---|---|
+| `POST /api/governo/animais` · `GET/PUT /api/governo/animais/{microchip}` | registro do animal |
+| `POST /api/governo/vacinacoes-antirrabicas` | recebe vacinação antirrábica |
+| `GET /api/governo/operacoes/{protocolo}` | consulta de protocolo |
+| `POST /api/governo/admin/indisponibilidade` | simula `off` / `503` / `timeout` |
 
 ## 🧪 Testes
+```bash
+python tests/run_tests.py
+```
+Sobe os serviços em portas de teste com bancos temporários, executa os **16 cenários obrigatórios** (+ extras) e gera
+[`docs/testes/relatorio-testes.md`](docs/testes/relatorio-testes.md). A coleção Postman está em [`postman/`](postman).
 
-**Autenticação**
-- [ ] 1. Login de veterinário ativo e com senha confirmada
-- [ ] 2. Bloqueio de veterinário inativo
-- [ ] 3. Bloqueio de veterinário com senha não confirmada
-- [ ] 4. Rejeição de senha incorreta
+> Os testes automáticos usam um *mock* do ViaCEP (offline). Para testar o ViaCEP **real**, use a tela de tutores ou o Postman com internet.
 
-**Cadastros**
-- [ ] 5. Cadastro de tutor e validação de CPF duplicado
-- [ ] 6. Consulta de CEP válido e tratamento de CEP inexistente
-- [ ] 7. Cadastro de animal e vínculo de microchip
-- [ ] 8. Rejeição de microchip já utilizado
+## 📁 Estrutura
+```
+├── frontend/                 # interface web
+├── backend-clinica/          # API privada (app, security, db, viacep, integracao, validators, config)
+├── api-governo-simulada/     # API governamental simulada
+├── database/{clinica,governo}# scripts SQL (schema + seed)
+├── docs/                     # requisitos, diagramas, OpenAPI, testes, cronograma
+├── postman/                  # coleção de testes
+├── tests/                    # testes automatizados
+├── scripts/setup-github.sh   # cria labels, milestones e issues
+└── .github/                  # templates de issue e PR
+```
 
-**Atendimento**
-- [ ] 9. Registro de consulta e consulta ao histórico clínico
-- [ ] 10. Registro de vacina e consulta às próximas doses
+## 🤝 Fluxo de trabalho
+Branches `main` (estável) · `develop` (integração) · `feature/*`. Commits no padrão *Conventional Commits*. Detalhes em [`CONTRIBUTING.md`](CONTRIBUTING.md).
+**Nunca** versione `.env` ou `*.db`.
 
-**Integração governamental**
-- [ ] 11. Cadastro e atualização de animal na API governamental simulada
-- [ ] 12. Envio obrigatório de vacina antirrábica
-- [ ] 13. Ausência de comunicação para vacina não antirrábica
-- [ ] 14. Indisponibilidade da API governamental e registro de pendência
-- [ ] 15. Reenvio de comunicação pendente e confirmação posterior
-- [ ] 16. Repetição de solicitação sem duplicidade no serviço externo
-
-
-## 📚 Documentação
-
-- [Requisitos e arquitetura](docs/requisitos/)
-- [Diagrama ER e modelo relacional](docs/diagrama.pdf)
-- [Documentação dos endpoints (OpenAPI)](docs/api/)
-- [Relatório de testes](docs/testes/)
+## 📦 Entregáveis (enunciado, seção 10)
+| Entregável | Onde |
+|---|---|
+| Requisitos e arquitetura | `docs/requisitos/` |
+| DER e modelo relacional | `docs/diagramas/` |
+| Código: frontend / API privada / API governamental | `frontend/` · `backend-clinica/` · `api-governo-simulada/` |
+| Scripts dos bancos | `database/` |
+| Documentação dos endpoints | `docs/api/` |
+| Coleção de testes | `postman/` |
+| Relatório de testes | `docs/testes/` |
+| Instruções de execução | este README |
+| Apresentação | roteiro em `docs/cronograma-e-entregas.md` |
 
 ## 👥 Equipe
-
 | Nome | GitHub |
 |---|---|
-| _Felipe Martins_ | [@fox322](https://github.com/fox322) |
-| _Stella Miranda_ | [@st3llami](https://github.com/st3llami) |
 | _Yasmim Costa_ | [@YasmimCosta](https://github.com/YasmimCosta) |
+| _Felipe Martins_ | [@fox322](https://github.com/fox322) |
+| _Stella Cardoso_ | [@st3llami](https://github.com/st3llami) |
 
-**Professor:** _Fabio Gomes_
 
-## ⚠️ Aviso
-
-Este é um projeto **acadêmico**. A API governamental é **simulada** e **não** representa integração oficial com sistemas governamentais reais. Todos os dados utilizados são fictícios.
-
-## 📄 Licença
-
-Distribuído sob a licença MIT. Veja o arquivo [`LICENSE`](LICENSE).
+Professor(a): _Fabio Gomes_ · Licença: uso acadêmico.
