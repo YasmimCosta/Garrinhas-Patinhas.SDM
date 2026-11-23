@@ -47,10 +47,10 @@ git clone https://github.com/YasmimCosta/Garrinhas-Patinhas.SDM.git
 cd Garrinhas-Patinhas.SDM
 
 python -m venv .venv
-source .venv/bin/activate          # Windows: .venv\Scripts\activate
+source .venv/bin/activate          
 pip install -r requirements.txt
 
-cp .env.example .env               # Windows: copy .env.example .env  (ajuste se quiser)
+cp .env.example .env              
 ```
 
 Abra **três terminais** (com o venv ativo), na raiz do projeto:
