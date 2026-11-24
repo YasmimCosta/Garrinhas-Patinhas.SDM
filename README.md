@@ -67,7 +67,7 @@ cd frontend && python -m http.server 3000
 ```
 
 Os bancos são **criados e populados automaticamente** na primeira execução a partir de
-[`database/clinica/`](Garrinhas-Patinhas.SDM/database/clinica) e [`database/governo/`](database/governo). Para recomeçar do zero, apague os arquivos `*.db`.
+[`database/clinica/`](Garrinhas-Patinhas.SDM/database/clinica) e [`database/governo/`](Garrinhas-Patinhas.SDM/database/governo). Para recomeçar do zero, apague os arquivos `*.db`.
 
 ### Acesso de demonstração (dados fictícios)
 | Veterinário | E-mail | Senha | Situação |
