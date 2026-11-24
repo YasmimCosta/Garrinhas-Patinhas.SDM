@@ -1,0 +1,21 @@
+ANTES DE INICIAR!
+
+No Terminal:
+
+pip install -r requirements.txt
+
+Terminal 1 (governo)
+cd api-governo-simulada
+python app.py
+
+Terminal 2 (clínica)
+cd backend-clinica
+python app.py
+
+Terminal 3 (frontend)
+cd frontend
+python -m http.server 3000
+
+VERIFICAR:
+
+Se o plugin do Live está no VSCode
