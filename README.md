@@ -1,7 +1,7 @@
 # 🐾 Garrinhas & Patinhas — Sistema Web para Gestão de Clínica Veterinária com Integração de APIs
 
 > **A3 – Projeto Integrador · Sistemas Distribuídos e Mobile (SDM)** · IBMR Centro Universitário Barra
-> Entrega/Apresentação: **26/11/2026** · Cronograma: [`docs/cronograma.jpeg`](docs/cronograma.jpeg) · [`docs/cronograma-e-entregas.md`](docs/cronograma-e-entregas.md)
+> Entrega/Apresentação: **26/11/2026** · Cronograma: [`docs/cronograma.jpeg`](Garrinhas-Patinhas.SDM/docs/cronograma.jpeg) ·
 
 Sistema web para cadastro e atendimento de uma clínica veterinária (**dados fictícios**): tutores, animais com microchip RFID,
 veterinários, consultas e vacinas. Três serviços independentes se comunicam por HTTP/REST:
@@ -36,7 +36,7 @@ flowchart LR
 | Documentação | OpenAPI 3 (`docs/api/`) |
 | Testes | Postman + script `tests/run_tests.py` |
 
-Justificativas em [`docs/requisitos/requisitos-e-arquitetura.md`](docs/requisitos/requisitos-e-arquitetura.md).
+Justificativas em [`docs/requisitos/requisitos-e-arquitetura.md`](Garrinhas-Patinhas.SDM/docs/requisitos/requisitos-e-arquitetura.md).
 
 ## 🚀 Como executar
 
@@ -67,7 +67,7 @@ cd frontend && python -m http.server 3000
 ```
 
 Os bancos são **criados e populados automaticamente** na primeira execução a partir de
-[`database/clinica/`](database/clinica) e [`database/governo/`](database/governo). Para recomeçar do zero, apague os arquivos `*.db`.
+[`database/clinica/`](Garrinhas-Patinhas.SDM/database/clinica) e [`database/governo/`](database/governo). Para recomeçar do zero, apague os arquivos `*.db`.
 
 ### Acesso de demonstração (dados fictícios)
 | Veterinário | E-mail | Senha | Situação |
@@ -79,7 +79,7 @@ Os bancos são **criados e populados automaticamente** na primeira execução a 
 CEP para teste: `20040020` (válido) e `99999999` (inexistente). Microchips: 15 dígitos, ex.: `076000000000001`.
 
 ## 🔌 Endpoints
-Documentação completa: [`docs/api/openapi-clinica.yaml`](docs/api/openapi-clinica.yaml) e [`docs/api/openapi-governo.yaml`](docs/api/openapi-governo.yaml)
+Documentação completa: [`docs/api/openapi-clinica.yaml`](Garrinhas-Patinhas.SDM/docs/api/openapi-clinica.yaml) e [`docs/api/openapi-governo.yaml`](Garrinhas-Patinhas.SDM/docs/api/openapi-governo.yaml)
 (cole no <https://editor.swagger.io> para visualizar).
 
 | API privada (8080) | |
@@ -104,7 +104,7 @@ Documentação completa: [`docs/api/openapi-clinica.yaml`](docs/api/openapi-clin
 python tests/run_tests.py
 ```
 Sobe os serviços em portas de teste com bancos temporários, executa os **16 cenários obrigatórios** (+ extras) e gera
-[`docs/testes/relatorio-testes.md`](docs/testes/relatorio-testes.md). A coleção Postman está em [`postman/`](postman).
+[`docs/testes/relatorio-testes.md`](Garrinhas-Patinhas.SDM/docs/testes/relatorio-testes.md). A coleção Postman está em [`postman/`](Garrinhas-Patinhas.SDM/postman).
 
 > Os testes automáticos usam um *mock* do ViaCEP (offline). Para testar o ViaCEP **real**, use a tela de tutores ou o Postman com internet.
 
