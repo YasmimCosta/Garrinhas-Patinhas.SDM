@@ -1,7 +1,6 @@
 # Modelo de dados — Clínica Veterinária Garrinhas & Patinhas
 
-Baseado no diagrama da equipe (`diagrama-er-original-v2.pdf`) e ajustado para cobrir **todos** os atributos
-e regras do enunciado (seções 3, 5 e 6). O script executável está em [`database/clinica/01_schema.sql`](../../database/clinica/01_schema.sql).
+Baseado no diagrama da equipe (`diagrama-er-original-v2.pdf`). O script executável está em [`database/clinica/01_schema.sql`](../../database/clinica/01_schema.sql).
 
 ## Diagrama entidade-relacionamento
 
