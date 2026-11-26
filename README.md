@@ -125,18 +125,18 @@ Sobe os serviços em portas de teste com bancos temporários, executa os **16 ce
 Branches `main` (estável) · `develop` (integração) · `feature/*`. Commits no padrão *Conventional Commits*. Detalhes em [`CONTRIBUTING.md`](CONTRIBUTING.md).
 **Nunca** versione `.env` ou `*.db`.
 
-## 📦 Entregáveis (enunciado, seção 10)
+## 📦 Entregáveis 
 | Entregável | Onde |
 |---|---|
-| Requisitos e arquitetura | `docs/requisitos/` |
-| DER e modelo relacional | `docs/diagramas/` |
-| Código: frontend / API privada / API governamental | `frontend/` · `backend-clinica/` · `api-governo-simulada/` |
-| Scripts dos bancos | `database/` |
-| Documentação dos endpoints | `docs/api/` |
-| Coleção de testes | `postman/` |
-| Relatório de testes | `docs/testes/` |
+| Requisitos e arquitetura | `Garrinhas-Patinhas.SDM/docs/requisitos/` |
+| DER e modelo relacional | `Garrinhas-Patinhas.SDM/docs/diagramas/` |
+| Código: frontend / API privada / API governamental | `Garrinhas-Patinhas.SDM/frontend/` · `Garrinhas-Patinhas.SDM/backend-clinica/` · `Garrinhas-Patinhas.SDM/api-governo-simulada/` |
+| Scripts dos bancos | `Garrinhas-Patinhas.SDM/database/` |
+| Documentação dos endpoints | `Garrinhas-Patinhas.SDM/docs/api/` |
+| Coleção de testes | `Garrinhas-Patinhas.SDM/postman/` |
+| Relatório de testes | `Garrinhas-Patinhas.SDM/docs/testes/` |
 | Instruções de execução | este README |
-| Apresentação | roteiro em `docs/cronograma-e-entregas.md` |
+| Apresentação | roteiro em `Garrinhas-Patinhas.SDM/docs/cronograma-e-entregas.md` |
 
 ## 👥 Equipe
 | Nome | GitHub |
