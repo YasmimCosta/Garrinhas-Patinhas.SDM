@@ -1,0 +1,1260 @@
+{
+ "info": {
+  "name": "Garrinhas & Patinhas - Clínica Veterinária",
+  "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+  "description": "Execute na ordem. Cenários numerados conforme a seção 9 do enunciado."
+ },
+ "variable": [
+  {
+   "key": "baseUrl",
+   "value": "http://localhost:8080"
+  },
+  {
+   "key": "govUrl",
+   "value": "http://localhost:8081"
+  },
+  {
+   "key": "token",
+   "value": ""
+  },
+  {
+   "key": "idTutor",
+   "value": ""
+  },
+  {
+   "key": "idAnimal",
+   "value": ""
+  },
+  {
+   "key": "idIntegracao",
+   "value": ""
+  },
+  {
+   "key": "microchip",
+   "value": "076000000000001"
+  }
+ ],
+ "item": [
+  {
+   "name": "1. Autenticação",
+   "item": [
+    {
+     "name": "[1] Login veterinário ativo",
+     "request": {
+      "method": "POST",
+      "header": [
+       {
+        "key": "Content-Type",
+        "value": "application/json"
+       }
+      ],
+      "url": {
+       "raw": "{{baseUrl}}/api/auth/login"
+      },
+      "auth": {
+       "type": "noauth"
+      },
+      "body": {
+       "mode": "raw",
+       "raw": "{\n  \"email\": \"ana.souza@clinica.test\",\n  \"senha\": \"Senha@123\"\n}"
+      }
+     },
+     "event": [
+      {
+       "listen": "test",
+       "script": {
+        "type": "text/javascript",
+        "exec": [
+         "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+         "pm.collectionVariables.set(\"token\", pm.response.json().token);"
+        ]
+       }
+      }
+     ]
+    },
+    {
+     "name": "[2] Login veterinário INATIVO (403)",
+     "request": {
+      "method": "POST",
+      "header": [
+       {
+        "key": "Content-Type",
+        "value": "application/json"
+       }
+      ],
+      "url": {
+       "raw": "{{baseUrl}}/api/auth/login"
+      },
+      "auth": {
+       "type": "noauth"
+      },
+      "body": {
+       "mode": "raw",
+       "raw": "{\n  \"email\": \"bruno.lima@clinica.test\",\n  \"senha\": \"Senha@123\"\n}"
+      }
+     },
+     "event": [
+      {
+       "listen": "test",
+       "script": {
+        "type": "text/javascript",
+        "exec": [
+         "pm.test(\"HTTP 403\", () => pm.response.to.have.status(403));"
+        ]
+       }
+      }
+     ]
+    },
+    {
+     "name": "[3] Login senha NÃO confirmada (403)",
+     "request": {
+      "method": "POST",
+      "header": [
+       {
+        "key": "Content-Type",
+        "value": "application/json"
+       }
+      ],
+      "url": {
+       "raw": "{{baseUrl}}/api/auth/login"
+      },
+      "auth": {
+       "type": "noauth"
+      },
+      "body": {
+       "mode": "raw",
+       "raw": "{\n  \"email\": \"carla.dias@clinica.test\",\n  \"senha\": \"Senha@123\"\n}"
+      }
+     },
+     "event": [
+      {
+       "listen": "test",
+       "script": {
+        "type": "text/javascript",
+        "exec": [
+         "pm.test(\"HTTP 403\", () => pm.response.to.have.status(403));"
+        ]
+       }
+      }
+     ]
+    },
+    {
+     "name": "[4] Login senha incorreta (401)",
+     "request": {
+      "method": "POST",
+      "header": [
+       {
+        "key": "Content-Type",
+        "value": "application/json"
+       }
+      ],
+      "url": {
+       "raw": "{{baseUrl}}/api/auth/login"
+      },
+      "auth": {
+       "type": "noauth"
+      },
+      "body": {
+       "mode": "raw",
+       "raw": "{\n  \"email\": \"ana.souza@clinica.test\",\n  \"senha\": \"errada\"\n}"
+      }
+     },
+     "event": [
+      {
+       "listen": "test",
+       "script": {
+        "type": "text/javascript",
+        "exec": [
+         "pm.test(\"HTTP 401\", () => pm.response.to.have.status(401));"
+        ]
+       }
+      }
+     ]
+    },
+    {
+     "name": "Endpoint protegido sem token (401)",
+     "request": {
+      "method": "GET",
+      "header": [
+       {
+        "key": "Content-Type",
+        "value": "application/json"
+       }
+      ],
+      "url": {
+       "raw": "{{baseUrl}}/api/animais"
+      },
+      "auth": {
+       "type": "noauth"
+      }
+     },
+     "event": [
+      {
+       "listen": "test",
+       "script": {
+        "type": "text/javascript",
+        "exec": [
+         "pm.test(\"HTTP 401\", () => pm.response.to.have.status(401));"
+        ]
+       }
+      }
+     ]
+    },
+    {
+     "name": "Logout",
+     "request": {
+      "method": "POST",
+      "header": [
+       {
+        "key": "Content-Type",
+        "value": "application/json"
+       }
+      ],
+      "url": {
+       "raw": "{{baseUrl}}/api/auth/logout"
+      },
+      "auth": {
+       "type": "bearer",
+       "bearer": [
+        {
+         "key": "token",
+         "value": "{{token}}",
+         "type": "string"
+        }
+       ]
+      }
+     }
+    }
+   ]
+  },
+  {
+   "name": "2. Tutor e CEP",
+   "item": [
+    {
+     "name": "[6] CEP válido",
+     "request": {
+      "method": "GET",
+      "header": [
+       {
+        "key": "Content-Type",
+        "value": "application/json"
+       }
+      ],
+      "url": {
+       "raw": "{{baseUrl}}/api/cep/20040020"
+      },
+      "auth": {
+       "type": "bearer",
+       "bearer": [
+        {
+         "key": "token",
+         "value": "{{token}}",
+         "type": "string"
+        }
+       ]
+      }
+     },
+     "event": [
+      {
+       "listen": "test",
+       "script": {
+        "type": "text/javascript",
+        "exec": [
+         "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));"
+        ]
+       }
+      }
+     ]
+    },
+    {
+     "name": "[6] CEP inexistente (404)",
+     "request": {
+      "method": "GET",
+      "header": [
+       {
+        "key": "Content-Type",
+        "value": "application/json"
+       }
+      ],
+      "url": {
+       "raw": "{{baseUrl}}/api/cep/99999999"
+      },
+      "auth": {
+       "type": "bearer",
+       "bearer": [
+        {
+         "key": "token",
+         "value": "{{token}}",
+         "type": "string"
+        }
+       ]
+      }
+     },
+     "event": [
+      {
+       "listen": "test",
+       "script": {
+        "type": "text/javascript",
+        "exec": [
+         "pm.test(\"HTTP 404\", () => pm.response.to.have.status(404));"
+        ]
+       }
+      }
+     ]
+    },
+    {
+     "name": "[5] Cadastrar tutor",
+     "request": {
+      "method": "POST",
+      "header": [
+       {
+        "key": "Content-Type",
+        "value": "application/json"
+       }
+      ],
+      "url": {
+       "raw": "{{baseUrl}}/api/tutores"
+      },
+      "auth": {
+       "type": "bearer",
+       "bearer": [
+        {
+         "key": "token",
+         "value": "{{token}}",
+         "type": "string"
+        }
+       ]
+      },
+      "body": {
+       "mode": "raw",
+       "raw": "{\n  \"nome\": \"João Teste\",\n  \"cpf\": \"39053344705\",\n  \"data_nascimento\": \"1985-02-15\",\n  \"email\": \"joao@exemplo.test\",\n  \"telefone\": \"21977770000\",\n  \"endereco\": {\n    \"cep\": \"20040020\",\n    \"logradouro\": \"Rua da Assembleia\",\n    \"numero\": \"100\",\n    \"bairro\": \"Centro\",\n    \"cidade\": \"Rio de Janeiro\",\n    \"uf\": \"RJ\",\n    \"codigo_ibge\": \"3304557\"\n  }\n}"
+      }
+     },
+     "event": [
+      {
+       "listen": "test",
+       "script": {
+        "type": "text/javascript",
+        "exec": [
+         "pm.test(\"HTTP 201\", () => pm.response.to.have.status(201));",
+         "pm.collectionVariables.set(\"idTutor\", pm.response.json().id_tutor);"
+        ]
+       }
+      }
+     ]
+    },
+    {
+     "name": "[5] CPF duplicado (409)",
+     "request": {
+      "method": "POST",
+      "header": [
+       {
+        "key": "Content-Type",
+        "value": "application/json"
+       }
+      ],
+      "url": {
+       "raw": "{{baseUrl}}/api/tutores"
+      },
+      "auth": {
+       "type": "bearer",
+       "bearer": [
+        {
+         "key": "token",
+         "value": "{{token}}",
+         "type": "string"
+        }
+       ]
+      },
+      "body": {
+       "mode": "raw",
+       "raw": "{\n  \"nome\": \"João Teste\",\n  \"cpf\": \"39053344705\",\n  \"data_nascimento\": \"1985-02-15\",\n  \"email\": \"joao@exemplo.test\",\n  \"telefone\": \"21977770000\",\n  \"endereco\": {\n    \"cep\": \"20040020\",\n    \"logradouro\": \"Rua\",\n    \"numero\": \"1\",\n    \"bairro\": \"Centro\",\n    \"cidade\": \"Rio de Janeiro\",\n    \"uf\": \"RJ\"\n  }\n}"
+      }
+     },
+     "event": [
+      {
+       "listen": "test",
+       "script": {
+        "type": "text/javascript",
+        "exec": [
+         "pm.test(\"HTTP 409\", () => pm.response.to.have.status(409));"
+        ]
+       }
+      }
+     ]
+    },
+    {
+     "name": "Perfil completo do tutor (dados, endereço, animais)",
+     "request": {
+      "method": "GET",
+      "header": [
+       {
+        "key": "Content-Type",
+        "value": "application/json"
+       }
+      ],
+      "url": {
+       "raw": "{{baseUrl}}/api/tutores/{{idTutor}}"
+      },
+      "auth": {
+       "type": "bearer",
+       "bearer": [
+        {
+         "key": "token",
+         "value": "{{token}}",
+         "type": "string"
+        }
+       ]
+      }
+     },
+     "event": [
+      {
+       "listen": "test",
+       "script": {
+        "type": "text/javascript",
+        "exec": [
+         "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+         "pm.test(\"traz animais\", () => pm.expect(pm.response.json()).to.have.property(\"animais\"));"
+        ]
+       }
+      }
+     ]
+    },
+    {
+     "name": "Editar perfil do tutor (campos parciais)",
+     "request": {
+      "method": "PUT",
+      "header": [
+       {
+        "key": "Content-Type",
+        "value": "application/json"
+       }
+      ],
+      "url": {
+       "raw": "{{baseUrl}}/api/tutores/{{idTutor}}"
+      },
+      "auth": {
+       "type": "bearer",
+       "bearer": [
+        {
+         "key": "token",
+         "value": "{{token}}",
+         "type": "string"
+        }
+       ]
+      },
+      "body": {
+       "mode": "raw",
+       "raw": "{\n  \"telefone\": \"21966660000\",\n  \"endereco\": {\n    \"numero\": \"200\",\n    \"complemento\": \"Apto 5\"\n  }\n}"
+      }
+     },
+     "event": [
+      {
+       "listen": "test",
+       "script": {
+        "type": "text/javascript",
+        "exec": [
+         "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));"
+        ]
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "3. Animal e microchip",
+   "item": [
+    {
+     "name": "[7] Cadastrar animal",
+     "request": {
+      "method": "POST",
+      "header": [
+       {
+        "key": "Content-Type",
+        "value": "application/json"
+       }
+      ],
+      "url": {
+       "raw": "{{baseUrl}}/api/animais"
+      },
+      "auth": {
+       "type": "bearer",
+       "bearer": [
+        {
+         "key": "token",
+         "value": "{{token}}",
+         "type": "string"
+        }
+       ]
+      },
+      "body": {
+       "mode": "raw",
+       "raw": "{\n  \"nome\": \"Mel\",\n  \"id_tutor\": \"{{idTutor}}\",\n  \"id_especie\": 2,\n  \"id_raca\": 4,\n  \"sexo\": \"F\",\n  \"cor\": \"Creme\",\n  \"data_nascimento\": \"2022-06-01\",\n  \"peso_atual\": 4.2\n}"
+      }
+     },
+     "event": [
+      {
+       "listen": "test",
+       "script": {
+        "type": "text/javascript",
+        "exec": [
+         "pm.test(\"HTTP 201\", () => pm.response.to.have.status(201));",
+         "pm.collectionVariables.set(\"idAnimal\", pm.response.json().id_animal);"
+        ]
+       }
+      }
+     ]
+    },
+    {
+     "name": "[7] Vincular microchip",
+     "request": {
+      "method": "POST",
+      "header": [
+       {
+        "key": "Content-Type",
+        "value": "application/json"
+       }
+      ],
+      "url": {
+       "raw": "{{baseUrl}}/api/animais/{{idAnimal}}/microchip"
+      },
+      "auth": {
+       "type": "bearer",
+       "bearer": [
+        {
+         "key": "token",
+         "value": "{{token}}",
+         "type": "string"
+        }
+       ]
+      },
+      "body": {
+       "mode": "raw",
+       "raw": "{\n  \"codigo_microchip\": \"{{microchip}}\"\n}"
+      }
+     },
+     "event": [
+      {
+       "listen": "test",
+       "script": {
+        "type": "text/javascript",
+        "exec": [
+         "pm.test(\"HTTP 201\", () => pm.response.to.have.status(201));"
+        ]
+       }
+      }
+     ]
+    },
+    {
+     "name": "[8] Microchip repetido (409)",
+     "request": {
+      "method": "POST",
+      "header": [
+       {
+        "key": "Content-Type",
+        "value": "application/json"
+       }
+      ],
+      "url": {
+       "raw": "{{baseUrl}}/api/animais/1/microchip"
+      },
+      "auth": {
+       "type": "bearer",
+       "bearer": [
+        {
+         "key": "token",
+         "value": "{{token}}",
+         "type": "string"
+        }
+       ]
+      },
+      "body": {
+       "mode": "raw",
+       "raw": "{\n  \"codigo_microchip\": \"{{microchip}}\"\n}"
+      }
+     },
+     "event": [
+      {
+       "listen": "test",
+       "script": {
+        "type": "text/javascript",
+        "exec": [
+         "pm.test(\"HTTP 409\", () => pm.response.to.have.status(409));"
+        ]
+       }
+      }
+     ]
+    },
+    {
+     "name": "Consultar animal + situação no governo",
+     "request": {
+      "method": "GET",
+      "header": [
+       {
+        "key": "Content-Type",
+        "value": "application/json"
+       }
+      ],
+      "url": {
+       "raw": "{{baseUrl}}/api/animais/{{idAnimal}}"
+      },
+      "auth": {
+       "type": "bearer",
+       "bearer": [
+        {
+         "key": "token",
+         "value": "{{token}}",
+         "type": "string"
+        }
+       ]
+      }
+     }
+    },
+    {
+     "name": "Registro do animal no governo (microchip + CPF do tutor)",
+     "request": {
+      "method": "GET",
+      "header": [
+       {
+        "key": "Content-Type",
+        "value": "application/json"
+       }
+      ],
+      "url": {
+       "raw": "{{baseUrl}}/api/animais/{{idAnimal}}/governo"
+      },
+      "auth": {
+       "type": "bearer",
+       "bearer": [
+        {
+         "key": "token",
+         "value": "{{token}}",
+         "type": "string"
+        }
+       ]
+      }
+     }
+    }
+   ]
+  },
+  {
+   "name": "4. Consulta e vacinas",
+   "item": [
+    {
+     "name": "[9] Registrar consulta",
+     "request": {
+      "method": "POST",
+      "header": [
+       {
+        "key": "Content-Type",
+        "value": "application/json"
+       }
+      ],
+      "url": {
+       "raw": "{{baseUrl}}/api/consultas"
+      },
+      "auth": {
+       "type": "bearer",
+       "bearer": [
+        {
+         "key": "token",
+         "value": "{{token}}",
+         "type": "string"
+        }
+       ]
+      },
+      "body": {
+       "mode": "raw",
+       "raw": "{\n  \"id_animal\": \"{{idAnimal}}\",\n  \"data_hora\": \"2026-11-23T10:00\",\n  \"motivo\": \"Check-up\",\n  \"diagnostico\": \"Saudável\",\n  \"peso\": 4.3,\n  \"temperatura\": 38.5\n}"
+      }
+     },
+     "event": [
+      {
+       "listen": "test",
+       "script": {
+        "type": "text/javascript",
+        "exec": [
+         "pm.test(\"HTTP 201\", () => pm.response.to.have.status(201));"
+        ]
+       }
+      }
+     ]
+    },
+    {
+     "name": "[9] Histórico de consultas",
+     "request": {
+      "method": "GET",
+      "header": [
+       {
+        "key": "Content-Type",
+        "value": "application/json"
+       }
+      ],
+      "url": {
+       "raw": "{{baseUrl}}/api/animais/{{idAnimal}}/consultas"
+      },
+      "auth": {
+       "type": "bearer",
+       "bearer": [
+        {
+         "key": "token",
+         "value": "{{token}}",
+         "type": "string"
+        }
+       ]
+      }
+     }
+    },
+    {
+     "name": "[10][13] Vacina NÃO antirrábica (sem comunicação)",
+     "request": {
+      "method": "POST",
+      "header": [
+       {
+        "key": "Content-Type",
+        "value": "application/json"
+       }
+      ],
+      "url": {
+       "raw": "{{baseUrl}}/api/vacinas"
+      },
+      "auth": {
+       "type": "bearer",
+       "bearer": [
+        {
+         "key": "token",
+         "value": "{{token}}",
+         "type": "string"
+        }
+       ]
+      },
+      "body": {
+       "mode": "raw",
+       "raw": "{\n  \"id_animal\": \"{{idAnimal}}\",\n  \"nome\": \"V10\",\n  \"tipo\": \"POLIVALENTE\",\n  \"fabricante\": \"LabFicticio\",\n  \"lote\": \"L-POLI-1\",\n  \"data_aplicacao\": \"2026-11-23\",\n  \"validade_lote\": \"2027-11-23\",\n  \"proxima_dose\": \"2026-12-23\"\n}"
+      }
+     },
+     "event": [
+      {
+       "listen": "test",
+       "script": {
+        "type": "text/javascript",
+        "exec": [
+         "pm.test(\"HTTP 201\", () => pm.response.to.have.status(201));",
+         "pm.test(\"sem comunicação\", () => pm.expect(pm.response.json().comunicacao_governo).to.eql(null));"
+        ]
+       }
+      }
+     ]
+    },
+    {
+     "name": "[10] Próximas doses",
+     "request": {
+      "method": "GET",
+      "header": [
+       {
+        "key": "Content-Type",
+        "value": "application/json"
+       }
+      ],
+      "url": {
+       "raw": "{{baseUrl}}/api/animais/{{idAnimal}}/vacinas"
+      },
+      "auth": {
+       "type": "bearer",
+       "bearer": [
+        {
+         "key": "token",
+         "value": "{{token}}",
+         "type": "string"
+        }
+       ]
+      }
+     }
+    },
+    {
+     "name": "[12] Vacina ANTIRRÁBICA (comunica governo)",
+     "request": {
+      "method": "POST",
+      "header": [
+       {
+        "key": "Content-Type",
+        "value": "application/json"
+       }
+      ],
+      "url": {
+       "raw": "{{baseUrl}}/api/vacinas"
+      },
+      "auth": {
+       "type": "bearer",
+       "bearer": [
+        {
+         "key": "token",
+         "value": "{{token}}",
+         "type": "string"
+        }
+       ]
+      },
+      "body": {
+       "mode": "raw",
+       "raw": "{\n  \"id_animal\": \"{{idAnimal}}\",\n  \"nome\": \"Raiva Premium\",\n  \"tipo\": \"ANTIRRABICA\",\n  \"fabricante\": \"LabFicticio\",\n  \"lote\": \"L-RAIVA-1\",\n  \"data_aplicacao\": \"2026-11-23\",\n  \"validade_lote\": \"2027-11-23\"\n}"
+      }
+     },
+     "event": [
+      {
+       "listen": "test",
+       "script": {
+        "type": "text/javascript",
+        "exec": [
+         "pm.test(\"HTTP 201\", () => pm.response.to.have.status(201));",
+         "pm.collectionVariables.set(\"idIntegracao\", pm.response.json().comunicacao_governo.id_integracao);"
+        ]
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "5. Falhas e reenvio",
+   "item": [
+    {
+     "name": "[14] Governo → INDISPONÍVEL (503)",
+     "request": {
+      "method": "POST",
+      "header": [
+       {
+        "key": "Content-Type",
+        "value": "application/json"
+       }
+      ],
+      "url": {
+       "raw": "{{govUrl}}/api/governo/admin/indisponibilidade"
+      },
+      "auth": {
+       "type": "noauth"
+      },
+      "body": {
+       "mode": "raw",
+       "raw": "{\n  \"modo\": \"503\"\n}"
+      }
+     },
+     "event": [
+      {
+       "listen": "test",
+       "script": {
+        "type": "text/javascript",
+        "exec": [
+         "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));"
+        ]
+       }
+      }
+     ]
+    },
+    {
+     "name": "[14] Antirrábica com governo fora → PENDENTE",
+     "request": {
+      "method": "POST",
+      "header": [
+       {
+        "key": "Content-Type",
+        "value": "application/json"
+       }
+      ],
+      "url": {
+       "raw": "{{baseUrl}}/api/vacinas"
+      },
+      "auth": {
+       "type": "bearer",
+       "bearer": [
+        {
+         "key": "token",
+         "value": "{{token}}",
+         "type": "string"
+        }
+       ]
+      },
+      "body": {
+       "mode": "raw",
+       "raw": "{\n  \"id_animal\": \"{{idAnimal}}\",\n  \"nome\": \"Raiva Premium\",\n  \"tipo\": \"ANTIRRABICA\",\n  \"fabricante\": \"LabFicticio\",\n  \"lote\": \"L-RAIVA-2\",\n  \"data_aplicacao\": \"2026-11-23\",\n  \"validade_lote\": \"2027-11-23\"\n}"
+      }
+     },
+     "event": [
+      {
+       "listen": "test",
+       "script": {
+        "type": "text/javascript",
+        "exec": [
+         "pm.test(\"HTTP 201\", () => pm.response.to.have.status(201));",
+         "pm.test(\"PENDENTE\", () => pm.expect(pm.response.json().comunicacao_governo.status).to.eql(\"PENDENTE\"));",
+         "pm.collectionVariables.set(\"idIntegracao\", pm.response.json().comunicacao_governo.id_integracao);"
+        ]
+       }
+      }
+     ]
+    },
+    {
+     "name": "[14] Listar pendências",
+     "request": {
+      "method": "GET",
+      "header": [
+       {
+        "key": "Content-Type",
+        "value": "application/json"
+       }
+      ],
+      "url": {
+       "raw": "{{baseUrl}}/api/integracoes?status=PENDENTE"
+      },
+      "auth": {
+       "type": "bearer",
+       "bearer": [
+        {
+         "key": "token",
+         "value": "{{token}}",
+         "type": "string"
+        }
+       ]
+      }
+     }
+    },
+    {
+     "name": "[15] Governo → DISPONÍVEL",
+     "request": {
+      "method": "POST",
+      "header": [
+       {
+        "key": "Content-Type",
+        "value": "application/json"
+       }
+      ],
+      "url": {
+       "raw": "{{govUrl}}/api/governo/admin/indisponibilidade"
+      },
+      "auth": {
+       "type": "noauth"
+      },
+      "body": {
+       "mode": "raw",
+       "raw": "{\n  \"modo\": \"off\"\n}"
+      }
+     },
+     "event": [
+      {
+       "listen": "test",
+       "script": {
+        "type": "text/javascript",
+        "exec": [
+         "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));"
+        ]
+       }
+      }
+     ]
+    },
+    {
+     "name": "[15] Reenviar pendência → CONFIRMADA",
+     "request": {
+      "method": "POST",
+      "header": [
+       {
+        "key": "Content-Type",
+        "value": "application/json"
+       }
+      ],
+      "url": {
+       "raw": "{{baseUrl}}/api/integracoes/{{idIntegracao}}/reenviar"
+      },
+      "auth": {
+       "type": "bearer",
+       "bearer": [
+        {
+         "key": "token",
+         "value": "{{token}}",
+         "type": "string"
+        }
+       ]
+      }
+     },
+     "event": [
+      {
+       "listen": "test",
+       "script": {
+        "type": "text/javascript",
+        "exec": [
+         "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+         "pm.test(\"CONFIRMADA\", () => pm.expect(pm.response.json().status).to.eql(\"CONFIRMADA\"));"
+        ]
+       }
+      }
+     ]
+    },
+    {
+     "name": "Integrações com microchip e CPF do tutor",
+     "request": {
+      "method": "GET",
+      "header": [
+       {
+        "key": "Content-Type",
+        "value": "application/json"
+       }
+      ],
+      "url": {
+       "raw": "{{baseUrl}}/api/integracoes"
+      },
+      "auth": {
+       "type": "bearer",
+       "bearer": [
+        {
+         "key": "token",
+         "value": "{{token}}",
+         "type": "string"
+        }
+       ]
+      }
+     }
+    }
+   ]
+  },
+  {
+   "name": "6. API governamental (simulada)",
+   "item": [
+    {
+     "name": "[11] Consultar animal no governo",
+     "request": {
+      "method": "GET",
+      "header": [
+       {
+        "key": "Content-Type",
+        "value": "application/json"
+       },
+       {
+        "key": "X-API-Key",
+        "value": "chave-demo-governo"
+       }
+      ],
+      "url": {
+       "raw": "{{govUrl}}/api/governo/animais/{{microchip}}"
+      },
+      "auth": {
+       "type": "noauth"
+      }
+     },
+     "event": [
+      {
+       "listen": "test",
+       "script": {
+        "type": "text/javascript",
+        "exec": [
+         "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));"
+        ]
+       }
+      }
+     ]
+    },
+    {
+     "name": "[11] Atualizar animal no governo",
+     "request": {
+      "method": "PUT",
+      "header": [
+       {
+        "key": "Content-Type",
+        "value": "application/json"
+       },
+       {
+        "key": "X-API-Key",
+        "value": "chave-demo-governo"
+       }
+      ],
+      "url": {
+       "raw": "{{govUrl}}/api/governo/animais/{{microchip}}"
+      },
+      "auth": {
+       "type": "noauth"
+      },
+      "body": {
+       "mode": "raw",
+       "raw": "{\n  \"nome\": \"Mel\",\n  \"especie\": \"Gato\",\n  \"sexo\": \"F\",\n  \"tutor_nome\": \"João Teste\",\n  \"tutor_cpf\": \"39053344705\"\n}"
+      }
+     },
+     "event": [
+      {
+       "listen": "test",
+       "script": {
+        "type": "text/javascript",
+        "exec": [
+         "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));"
+        ]
+       }
+      }
+     ]
+    },
+    {
+     "name": "[16] Repetir vacinação (mesma chave) → duplicado",
+     "request": {
+      "method": "POST",
+      "header": [
+       {
+        "key": "Content-Type",
+        "value": "application/json"
+       },
+       {
+        "key": "X-API-Key",
+        "value": "chave-demo-governo"
+       },
+       {
+        "key": "Idempotency-Key",
+        "value": "teste-postman-1"
+       }
+      ],
+      "url": {
+       "raw": "{{govUrl}}/api/governo/vacinacoes-antirrabicas"
+      },
+      "auth": {
+       "type": "noauth"
+      },
+      "body": {
+       "mode": "raw",
+       "raw": "{\n  \"microchip\": \"{{microchip}}\",\n  \"data_aplicacao\": \"2026-11-23\",\n  \"vacina_nome\": \"Raiva Premium\",\n  \"fabricante\": \"LabFicticio\",\n  \"lote\": \"L-RAIVA-1\",\n  \"veterinario_crmv\": \"12345/RJ\"\n}"
+      }
+     },
+     "event": [
+      {
+       "listen": "test",
+       "script": {
+        "type": "text/javascript",
+        "exec": [
+         "pm.test(\"sem duplicar\", () => pm.expect(pm.response.code).to.be.oneOf([200,201]));"
+        ]
+       }
+      }
+     ]
+    },
+    {
+     "name": "Entrada inválida (422)",
+     "request": {
+      "method": "POST",
+      "header": [
+       {
+        "key": "Content-Type",
+        "value": "application/json"
+       },
+       {
+        "key": "X-API-Key",
+        "value": "chave-demo-governo"
+       }
+      ],
+      "url": {
+       "raw": "{{govUrl}}/api/governo/animais"
+      },
+      "auth": {
+       "type": "noauth"
+      },
+      "body": {
+       "mode": "raw",
+       "raw": "{\n  \"microchip\": \"123\"\n}"
+      }
+     },
+     "event": [
+      {
+       "listen": "test",
+       "script": {
+        "type": "text/javascript",
+        "exec": [
+         "pm.test(\"HTTP 422\", () => pm.response.to.have.status(422));"
+        ]
+       }
+      }
+     ]
+    },
+    {
+     "name": "Sem credencial (401)",
+     "request": {
+      "method": "POST",
+      "header": [
+       {
+        "key": "Content-Type",
+        "value": "application/json"
+       }
+      ],
+      "url": {
+       "raw": "{{govUrl}}/api/governo/animais"
+      },
+      "auth": {
+       "type": "noauth"
+      },
+      "body": {
+       "mode": "raw",
+       "raw": "{}"
+      }
+     },
+     "event": [
+      {
+       "listen": "test",
+       "script": {
+        "type": "text/javascript",
+        "exec": [
+         "pm.test(\"HTTP 401\", () => pm.response.to.have.status(401));"
+        ]
+       }
+      }
+     ]
+    },
+    {
+     "name": "Listar animais registrados (microchip + CPF do tutor)",
+     "request": {
+      "method": "GET",
+      "header": [
+       {
+        "key": "Content-Type",
+        "value": "application/json"
+       },
+       {
+        "key": "X-API-Key",
+        "value": "chave-demo-governo"
+       }
+      ],
+      "url": {
+       "raw": "{{govUrl}}/api/governo/animais"
+      },
+      "auth": {
+       "type": "noauth"
+      }
+     },
+     "event": [
+      {
+       "listen": "test",
+       "script": {
+        "type": "text/javascript",
+        "exec": [
+         "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));"
+        ]
+       }
+      }
+     ]
+    },
+    {
+     "name": "Consultar operação por protocolo (microchip + CPF)",
+     "request": {
+      "method": "GET",
+      "header": [
+       {
+        "key": "Content-Type",
+        "value": "application/json"
+       },
+       {
+        "key": "X-API-Key",
+        "value": "chave-demo-governo"
+       }
+      ],
+      "url": {
+       "raw": "{{govUrl}}/api/governo/operacoes/COLE-O-PROTOCOLO-AQUI"
+      },
+      "auth": {
+       "type": "noauth"
+      }
+     }
+    }
+   ]
+  }
+ ]
+}
