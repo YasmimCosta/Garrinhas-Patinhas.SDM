@@ -51,14 +51,4 @@ Cronograma do professor (`docs/cronograma.jpeg`): 5 semanas, milestones às quin
 | Instruções de execução | `README.md` |
 | Apresentação | roteiro abaixo |
 
-## Roteiro sugerido da apresentação (≈10 min)
-1. **Arquitetura** (1 min): três serviços, dois bancos, ViaCEP.
-2. **Login**: veterinário ativo entra; mostrar o bloqueio de inativo e de senha não confirmada.
-3. **Tutor + CEP**: digitar `20040020`, preencher pelo ViaCEP; tentar um CEP inexistente e preencher manualmente; repetir o CPF para mostrar o 409.
-4. **Animal + microchip**: cadastrar, vincular chip `076000000000001`; tentar reutilizar o chip; substituir e mostrar o histórico.
-5. **Consulta** e **vacina polivalente** com próxima dose (sem comunicação ao governo).
-6. **Vacina antirrábica**: mostrar a comunicação `CONFIRMADA` com protocolo.
-7. **Falha**: aba *Integração Governo* → "Indisponível (503)" → registrar outra antirrábica → fica `PENDENTE`, vacina salva localmente.
-8. **Regularização**: "Disponível" → "Reenviar" (ou esperar o reenvio automático) → `CONFIRMADA`, sem duplicar.
-9. **Idempotência**: mostrar no Postman a pasta 6 (repetir a mesma vacinação → `duplicado: true`).
-10. **Evidências**: relatório de testes e Swagger/OpenAPI.
+
