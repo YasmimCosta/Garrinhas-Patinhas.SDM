@@ -2,7 +2,7 @@ ANTES DE INICIAR!
 
 No Terminal:
 
-pip install -r requirements.txt
+python -m pip install -r requirements.txt
 
 Terminal 1 (governo)
 cd api-governo-simulada
