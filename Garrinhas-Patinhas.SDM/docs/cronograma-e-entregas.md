@@ -49,6 +49,6 @@ Cronograma do professor (`docs/cronograma.jpeg`): 5 semanas, milestones às quin
 | Testes integrados | `python tests/run_tests.py` → `docs/testes/relatorio-testes.md` |
 | Documentação dos endpoints | `docs/api/openapi-*.yaml` |
 | Instruções de execução | `README.md` |
-| Apresentação | roteiro abaixo |
+| Apresentação | Feito! |
 
 
