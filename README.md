@@ -136,7 +136,7 @@ Branches `main` (estável) · `develop` (integração) · `feature/*`. Commits n
 | Coleção de testes | `Garrinhas-Patinhas.SDM/postman/` |
 | Relatório de testes | `Garrinhas-Patinhas.SDM/docs/testes/` |
 | Instruções de execução | este README |
-| Apresentação | roteiro em `Garrinhas-Patinhas.SDM/docs/cronograma-e-entregas.md` |
+| Apresentação | Feita dia 26/11 em aula |
 
 ## 👥 Equipe
 | Nome | GitHub |
