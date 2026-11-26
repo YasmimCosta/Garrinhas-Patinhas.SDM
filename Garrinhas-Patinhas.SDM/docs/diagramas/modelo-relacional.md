@@ -136,7 +136,3 @@ erDiagram
 | vacina | id_vacina | id_animal, id_veterinario, id_consulta (NULL) | — | tipo estruturado; `antirrabica = (tipo='ANTIRRABICA')`; status ∈ {AGENDADA, APLICADA, CANCELADA} |
 | integracao_governo | id_integracao | id_animal, id_vacina (NULL) | **chave_idempotencia** | tipo_operacao; status ∈ {PENDENTE, ENVIADA, CONFIRMADA, FALHA} |
 
-
-
-> ✏️ **A fazer pela equipe:** atualizar o diagrama visual (PDF/imagem) com estes ajustes e salvá-lo nesta pasta.
-> O diagrama Mermaid acima já serve como entrega (o GitHub o renderiza).
